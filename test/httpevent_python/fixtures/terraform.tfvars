@@ -1,0 +1,22 @@
+created_by                    = "serverless team"
+description                   = "http python based cloud function"
+owner                         = "serverless team"
+project_id                    = "hostproject-379219"
+function_name                 = "hello_world_python"
+runtime                       = "python39"
+available_memory_mb           = 256
+timeout                       = 60
+github_url                    = "https://github.com/Positivemindset/ci-cd.git"
+folder_name                   = "ci-cd"
+entry_point                   = "hello_world"
+environment_vars              = { "EXAMPLE_VAR" = "example_value" }
+ingress_settings              = "ALLOW_ALL"
+vpc_connector_egress_settings = "ALL_TRAFFIC"
+vpc_connector                 = "projects/hostproject-379219/locations/europe-west2/connectors/serverlessvpcconnector"
+service_account_email         = "hostproject-379219@appspot.gserviceaccount.com"
+max_instances                 = 10
+trigger_type                  = "HTTP_TRIGGER"
+encryption_type               = ""
+kms_key_name                  = null
+zip_name                      = "hello_world_python"
+function_archive_bucket_name  = "cf-archive-bucket"
