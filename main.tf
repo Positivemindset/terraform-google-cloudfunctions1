@@ -1,24 +1,30 @@
-# Define local variables
 locals {
   shared_labels = {
-    "created_by"  = replace(var.created_by, " ", "_")
-    "description" = replace(var.description, " ", "_")
-    "owner"       = replace(var.owner, " ", "_")
+    "created_by"  = lower(replace(var.created_by, " ", "_"))
+    "description" = lower(replace(var.description, " ", "_"))
+    "owner"       = lower(replace(var.owner, " ", "_"))
   }
 }
+
 
 # Clone the repository
 resource "null_resource" "clone_repository" {
   provisioner "local-exec" {
     command = <<-EOT
-      if [ -d ${var.folder_name} ]; then
-        rm -rf ${var.folder_name}
-      fi
-      git clone ${var.github_url} ${var.folder_name}
-    EOT
+        if [ -d ${var.folder_name} ]; then
+          rm -rf ${var.folder_name}
+        fi
+        if [ -n "${var.github_url}" ]; then
+          git clone ${var.github_url} ${var.folder_name}
+        elif [ -n "${var.local_folder}" ]; then
+          cp -r ${var.local_folder} ${var.folder_name}
+        else
+          echo "Error: No Github URL or local folder specified"
+          exit 1
+        fi
+      EOT
   }
 }
-
 
 
 # Archive the repository
@@ -86,5 +92,6 @@ resource "google_cloudfunctions_function" "cloud_function" {
   kms_key_name = var.encryption_type == "CUSTOMER_MANAGED_KEY" ? var.kms_key_name : null
 
   labels = local.shared_labels
+
 }
 

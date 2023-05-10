@@ -68,5 +68,3 @@ module "my_cloud_function" {
     - roles/pubsub.admin (if using Pub/Sub triggers): This role allows the service account to manage Pub/Sub topics and subscriptions.
 
     - roles/iam.serviceAccountUser: This role allows the service account to use the service account specified in var.service_account_email. If this variable is not set, you don't need this role.
-
-5. JSON key for the service account

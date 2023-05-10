@@ -17,3 +17,5 @@ crash.log
 
 # Ignore .terraformrc as it can contain sensitive information
 .terraformrc
+
+*.zip

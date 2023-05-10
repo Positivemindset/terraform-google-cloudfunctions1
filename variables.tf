@@ -190,11 +190,12 @@ variable "function_archive_bucket_name" {
   type        = string
 }
 
-variable "pubsub_subscription_name" {
-  description = "Name of the Pub/Sub subscription to use for the trigger (required for Pub/Sub trigger type)"
-  type        = string
-}
 
+variable "local_folder" {
+  type        = string
+  description = "The path to the local folder containing the function source code"
+  default     = ""
+}
 /*
 # Cloud Function event bucket
 variable "event_bucket_name" {
