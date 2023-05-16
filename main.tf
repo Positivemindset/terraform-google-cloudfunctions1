@@ -1,8 +1,11 @@
+# Define the labels in the locals block
 locals {
   shared_labels = {
-    "created_by"  = lower(replace(var.created_by, " ", "_"))
-    "description" = lower(replace(var.description, " ", "_"))
-    "owner"       = lower(replace(var.owner, " ", "_"))
+    "owner"               = replace(var.owner, " ", "_")
+    "cmdb_appid"          = replace(var.cmdb_appid, " ", "_")
+    "cost_centre"         = replace(var.cost_centre, " ", "_")
+    "data_classification" = replace(var.data_classification, " ", "_")
+    "environment"         = replace(var.environment, " ", "_")
   }
 }
 
@@ -92,6 +95,7 @@ resource "google_cloudfunctions_function" "cloud_function" {
   kms_key_name = var.encryption_type == "CUSTOMER_MANAGED_KEY" ? var.kms_key_name : null
 
   labels = local.shared_labels
+
 
 }
 

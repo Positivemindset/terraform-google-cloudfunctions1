@@ -1,20 +1,11 @@
 
 
-# Cloud Function basic configuration
-variable "created_by" {
-  description = "The name of the person or team that created the resource"
-  type        = string
-}
 
 variable "description" {
   description = "A description of the resource"
   type        = string
 }
 
-variable "owner" {
-  description = "The name of the person or team that owns the resource"
-  type        = string
-}
 variable "project_id" {
   description = "The ID of the Google Cloud project"
   type        = string
@@ -196,6 +187,33 @@ variable "local_folder" {
   description = "The path to the local folder containing the function source code"
   default     = ""
 }
+
+# Define the labels as input variables
+variable "owner" {
+  type        = string
+  description = "The owner of the Cloud Function."
+}
+
+variable "cmdb_appid" {
+  type        = string
+  description = "The CMDB App ID associated with the Cloud Function."
+}
+
+variable "cost_centre" {
+  type        = string
+  description = "The cost center for the Cloud Function."
+}
+
+variable "data_classification" {
+  type        = string
+  description = "The data classification level for the Cloud Function."
+}
+
+variable "environment" {
+  type        = string
+  description = "The environment where the Cloud Function is deployed (e.g., development, production)."
+}
+
 /*
 # Cloud Function event bucket
 variable "event_bucket_name" {

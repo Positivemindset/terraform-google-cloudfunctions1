@@ -1,7 +1,10 @@
 # General configuration
-created_by = "serverless_team"
-owner      = "serverless_team"
-project_id = "hostproject-379219"
+owner               = "harsha"
+cmdb_appid          = "dsfa23"
+cost_centre         = "324234d"
+data_classification = "limited"
+environment         = "tst"
+project_id          = "hostproject-379219"
 
 # Common Cloud Function settings
 available_memory_mb           = 256
@@ -14,6 +17,7 @@ service_account_email         = "hostproject-379219@appspot.gserviceaccount.com"
 max_instances                 = 10
 github_url                    = ""
 kms_key_name                  = null
+
 
 # Common Cloud Function settings for Python
 entry_point_python = "main"

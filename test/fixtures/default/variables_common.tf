@@ -1,13 +1,5 @@
 # Cloud Function basic configuration
-variable "created_by" {
-  description = "The name of the person or team that created the resource"
-  type        = string
-}
 
-variable "owner" {
-  description = "The name of the person or team that owns the resource"
-  type        = string
-}
 variable "project_id" {
   description = "The ID of the Google Cloud project"
   type        = string
@@ -92,4 +84,31 @@ variable "kms_key_name" {
   description = "KMS key name for customer-managed encryption"
   type        = string
   default     = null
+}
+
+
+# Define the labels as input variables
+variable "owner" {
+  type        = string
+  description = "The owner of the Cloud Function."
+}
+
+variable "cmdb_appid" {
+  type        = string
+  description = "The CMDB App ID associated with the Cloud Function."
+}
+
+variable "cost_centre" {
+  type        = string
+  description = "The cost center for the Cloud Function."
+}
+
+variable "data_classification" {
+  type        = string
+  description = "The data classification level for the Cloud Function."
+}
+
+variable "environment" {
+  type        = string
+  description = "The environment where the Cloud Function is deployed (e.g., development, production)."
 }
