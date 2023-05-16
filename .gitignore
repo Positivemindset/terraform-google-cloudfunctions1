@@ -2,6 +2,8 @@
 *.tfstate
 *.tfstate.backup
 *.tfplan
+*.terraform.tfstate*
+*.terraform.lock.hcl*
 
 # Ignore .terraform directories
 **/.terraform/*
@@ -19,3 +21,10 @@ crash.log
 .terraformrc
 
 *.zip
+
+# Exclude all folders in testdata directory
+testdata/*
+
+# Include specific folders in testdata directory
+!testdata/dotnet-cf/
+!testdata/python-cf/
