@@ -86,8 +86,21 @@ variable "kms_key_name" {
   default     = null
 }
 
+module "my_cloud_function" {
+  source = "path/to/module"
+  # other module inputs
+  labels = {
+    owner               = "John Doe"
+    cmdb_appid          = "12345"
+    cost_centre         = "A123"
+    data_classification = "Confidential"
+    environment         = "Production"
+    custom_label        = "Custom Value"
+  }
+}
 
-# Define the labels as input variables
+
+/* # Define the labels as input variables
 variable "owner" {
   type        = string
   description = "The owner of the Cloud Function."
@@ -111,4 +124,4 @@ variable "data_classification" {
 variable "environment" {
   type        = string
   description = "The environment where the Cloud Function is deployed (e.g., development, production)."
-}
+} */

@@ -1,12 +1,11 @@
-# Define the labels in the locals block
 locals {
-  shared_labels = {
-    "owner"               = replace(var.owner, " ", "_")
-    "cmdb_appid"          = replace(var.cmdb_appid, " ", "_")
-    "cost_centre"         = replace(var.cost_centre, " ", "_")
-    "data_classification" = replace(var.data_classification, " ", "_")
-    "environment"         = replace(var.environment, " ", "_")
-  }
+  shared_labels = merge({
+    "owner"               = replace(var.labels["owner"], " ", "_")
+    "cmdb_appid"          = replace(var.labels["cmdb_appid"], " ", "_")
+    "cost_centre"         = replace(var.labels["cost_centre"], " ", "_")
+    "data_classification" = replace(var.labels["data_classification"], " ", "_")
+    "environment"         = replace(var.labels["environment"], " ", "_")
+  }, var.labels)
 }
 
 

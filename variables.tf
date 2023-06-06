@@ -188,7 +188,14 @@ variable "local_folder" {
   default     = ""
 }
 
-# Define the labels as input variables
+variable "labels" {
+  type        = map(string)
+  description = "Labels for the Cloud Function"
+  default     = {}
+}
+
+
+/* # Define the labels as input variables
 variable "owner" {
   type        = string
   description = "The owner of the Cloud Function."
@@ -213,7 +220,7 @@ variable "environment" {
   type        = string
   description = "The environment where the Cloud Function is deployed (e.g., development, production)."
 }
-
+ */
 /*
 # Cloud Function event bucket
 variable "event_bucket_name" {

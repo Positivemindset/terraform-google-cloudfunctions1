@@ -1,10 +1,12 @@
 # General configuration
-owner               = "harsha"
-cmdb_appid          = "dsfa23"
-cost_centre         = "324234d"
-data_classification = "limited"
-environment         = "tst"
-project_id          = "hostproject-379219"
+labels = {
+  owner               = "harsha"
+  cmdb_appid          = "dsfa23"
+  cost_centre         = "324234d"
+  data_classification = "limited"
+  environment         = "tst"
+}
+project_id = "hostproject-379219"
 
 # Common Cloud Function settings
 available_memory_mb           = 256
