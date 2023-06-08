@@ -7,7 +7,7 @@ labels = {
   environment         = "tst"
 }
 project_id = "hostproject-379219"
-
+region     = "europe-west2"
 # Common Cloud Function settings
 available_memory_mb           = 256
 timeout                       = 60

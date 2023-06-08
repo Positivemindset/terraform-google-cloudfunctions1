@@ -49,7 +49,6 @@ variable "folder_name" {
 variable "entry_point" {
   description = "Name of the function to be executed in the Cloud Function"
   type        = string
-  default     = ""
 }
 
 # Environment variables
@@ -194,58 +193,19 @@ variable "labels" {
   default     = {}
 }
 
-
-/* # Define the labels as input variables
-variable "owner" {
+variable "region" {
   type        = string
-  description = "The owner of the Cloud Function."
+  description = "region"
 }
 
-variable "cmdb_appid" {
+variable "docker_repository" {
   type        = string
-  description = "The CMDB App ID associated with the Cloud Function."
+  description = "artifact registry"
+  default     = "projects/hostproject-379219/locations/europe-west2/repositories/cfdockerregistry"
 }
 
-variable "cost_centre" {
+variable "docker_registry" {
   type        = string
-  description = "The cost center for the Cloud Function."
+  description = "artifact registry"
+  default     = "ARTIFACT_REGISTRY"
 }
-
-variable "data_classification" {
-  type        = string
-  description = "The data classification level for the Cloud Function."
-}
-
-variable "environment" {
-  type        = string
-  description = "The environment where the Cloud Function is deployed (e.g., development, production)."
-}
- */
-/*
-# Cloud Function event bucket
-variable "event_bucket_name" {
-  description = "Name of the Google Cloud Storage bucket where the event coming from"
-  type        = string
-}
-
-# Pub/Sub topic name for the event trigger
-variable "pubsub_topic_name" {
-  description = "Name of the Pub/Sub topic for the event trigger"
-  type        = string
-  default     = null
-}
-
-
-
-# Image repository type
-variable "image_repository_type" {
-  description = "Image repository type for the Cloud Function"
-  type        = string
-}
-
-# Image repository
-variable "image_repository" {
-  description = "Image repository for the Cloud Function"
-  type        = string
-}
- */

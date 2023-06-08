@@ -8,6 +8,13 @@ locals {
   }, var.labels)
 }
 
+/* 
+data "google_artifact_registry_repository" "my_repository" {
+  project       = var.project_id
+  location      = var.region
+  repository_id = var.repository_id
+}
+ */
 
 # Clone the repository
 resource "null_resource" "clone_repository" {
@@ -95,6 +102,7 @@ resource "google_cloudfunctions_function" "cloud_function" {
 
   labels = local.shared_labels
 
-
+  docker_registry   = var.docker_registry
+  docker_repository = var.docker_repository
 }
 

@@ -24,12 +24,6 @@ module "http_python_cloud_function" {
   zip_name                      = var.http_zip_name_python
   function_archive_bucket_name  = var.http_function_archive_bucket_name_python
   labels                        = var.labels
-
-  /*  owner                         = var.owner
-  cmdb_appid                    = var.cmdb_appid
-  cost_centre                   = var.cost_centre
-  data_classification           = var.data_classification
-  environment                   = var.environment */
 }
 
 # Python Pub/Sub Cloud Function
@@ -57,14 +51,9 @@ module "pubsub_python_cloud_function" {
   project_id                    = var.project_id
   zip_name                      = var.pubsub_zip_name_python
   function_archive_bucket_name  = var.pubsub_function_archive_bucket_name_python
-  trigger_event_type_pubsub     = var.pubsub_trigger_event_type_pubsub_python
   labels                        = var.labels
 
-  /* owner                         = var.owner
-  cmdb_appid                    = var.cmdb_appid
-  cost_centre                   = var.cost_centre
-  data_classification           = var.data_classification
-  environment                   = var.environment */
+
 }
 
 # Python Storage Cloud Function
@@ -94,11 +83,6 @@ module "storage_python_cloud_function" {
   function_archive_bucket_name  = var.storage_function_archive_bucket_name_python
   labels                        = var.labels
 
-  /* owner                         = var.owner
-  cmdb_appid                    = var.cmdb_appid
-  cost_centre                   = var.cost_centre
-  data_classification           = var.data_classification
-  environment                   = var.environment */
 }
 
 # .NET HTTP Cloud Function
@@ -129,11 +113,6 @@ module "http_dotnet_cloud_function" {
   function_archive_bucket_name = var.http_function_archive_bucket_name_dotnet
   labels                       = var.labels
 
-  /* owner                        = var.owner
-  cmdb_appid                   = var.cmdb_appid
-  cost_centre                  = var.cost_centre
-  data_classification          = var.data_classification
-  environment                  = var.environment */
 }
 
 # .NET Pub/Sub Cloud Function
@@ -158,18 +137,10 @@ module "pubsub_dotnet_cloud_function" {
   encryption_type               = var.pubsub_encryption_type_dotnet
   description                   = var.pubsub_description_dotnet
   region                        = var.region
-
-  project_id                   = var.project_id
-  zip_name                     = var.pubsub_zip_name_dotnet
-  function_archive_bucket_name = var.pubsub_function_archive_bucket_name_dotnet
-  trigger_event_type_pubsub    = var.pubsub_trigger_event_type_pubsub_dotnet
-  labels                       = var.labels
-
-  /* owner                        = var.owner
-  cmdb_appid                   = var.cmdb_appid
-  cost_centre                  = var.cost_centre
-  data_classification          = var.data_classification
-  environment                  = var.environment */
+  project_id                    = var.project_id
+  zip_name                      = var.pubsub_zip_name_dotnet
+  function_archive_bucket_name  = var.pubsub_function_archive_bucket_name_dotnet
+  labels                        = var.labels
 }
 
 # .NET Storage Cloud Function
@@ -194,15 +165,9 @@ module "storage_dotnet_cloud_function" {
   encryption_type               = var.storage_encryption_type_dotnet
   description                   = var.storage_description_dotnet
   region                        = var.region
+  project_id                    = var.project_id
+  zip_name                      = var.storage_zip_name_dotnet
+  function_archive_bucket_name  = var.storage_function_archive_bucket_name_dotnet
+  labels                        = var.labels
 
-  project_id                   = var.project_id
-  zip_name                     = var.storage_zip_name_dotnet
-  function_archive_bucket_name = var.storage_function_archive_bucket_name_dotnet
-  labels                       = var.labels
-  /* owner                        = var.owner
-  cmdb_appid                   = var.cmdb_appid
-  cost_centre                  = var.cost_centre
-  data_classification          = var.data_classification
-  environment                  = var.environment
- */
 }

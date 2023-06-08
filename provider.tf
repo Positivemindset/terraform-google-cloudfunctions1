@@ -5,8 +5,5 @@ provider "google" {
   project = var.project_id
 
   # Set the region for the provider to the "europe-west2" region
-  region = "europe-west2"
-
-  # Set the zone for the provider to the "europe-west2-a" zone
-  zone = "europe-west2-a"
+  region = var.region
 }

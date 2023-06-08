@@ -1,28 +1,3 @@
-output "owner" {
-  value       = var.owner
-  description = "Owner of the resource"
-}
-
-output "cmdb_appid" {
-  value       = var.cmdb_appid
-  description = "CMDB App ID"
-}
-
-output "cost_centre" {
-  value       = var.cost_centre
-  description = "Cost centre"
-}
-
-output "data_classification" {
-  value       = var.data_classification
-  description = "Data classification"
-}
-
-output "environment" {
-  value       = var.environment
-  description = "Environment"
-}
-
 output "project_id" {
   value       = var.project_id
   description = "Project ID"

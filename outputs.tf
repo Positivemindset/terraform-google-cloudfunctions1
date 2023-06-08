@@ -64,3 +64,4 @@ output "function_vpc_egress_settings" {
   description = "Function vpc egress settings"
   value       = join(" ", google_cloudfunctions_function.cloud_function.*.vpc_connector_egress_settings)
 }
+

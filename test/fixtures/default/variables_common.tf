@@ -86,18 +86,17 @@ variable "kms_key_name" {
   default     = null
 }
 
-module "my_cloud_function" {
-  source = "path/to/module"
-  # other module inputs
-  labels = {
-    owner               = "John Doe"
-    cmdb_appid          = "12345"
-    cost_centre         = "A123"
-    data_classification = "Confidential"
-    environment         = "Production"
-    custom_label        = "Custom Value"
-  }
+variable "labels" {
+  type        = map(string)
+  description = "Labels for the Cloud Function"
+  default     = {}
 }
+
+variable "region" {
+  type        = string
+  description = "region"
+}
+
 
 
 /* # Define the labels as input variables
