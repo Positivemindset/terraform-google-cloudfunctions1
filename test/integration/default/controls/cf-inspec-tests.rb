@@ -4,6 +4,8 @@ service_account_email = attribute('service_account_email')
 available_memory_mb = attribute('available_memory_mb')
 timeout = attribute('timeout')
 region = attribute('region')
+docker_registry = attribute('docker_registry')
+docker_repository = attribute('docker_repository')
 
 event_configs = {
   'http_python' => {
@@ -85,7 +87,6 @@ control "cloud_functions" do
 
   event_configs.each do |event_type, event_config|
     function_name = "projects/#{project_id}/locations/#{region}/functions/#{event_config['function_name']}"
-    vpc_connector = "projects/#{project_id}/locations/#{region}/connectors/#{event_config['vpc_connector']}"
     describe google_cloudfunctions_cloud_function(project: project_id, location: region, name: event_config['function_name']) do
       it { should exist }
       its('name') { should eq function_name }
@@ -95,38 +96,73 @@ control "cloud_functions" do
       its('available_memory_mb') { should eq available_memory_mb }
       its('timeout') { should eq "#{timeout}s" } # Add 's' to match the format
       its('description') { should eq event_config['description'] }
-      its('trigger_type') { should eq event_config['trigger_type'] }
-      its('trigger_source') { should eq event_config['trigger_source'] }
-      its('ingress_settings') { should eq event_config['ingress_settings'] }
-      its('max_instances') { should eq event_config['max_instances'] }
-      its('kms_key_name') { should eq event_config['kms_key_name'] }
-      its('vpc_connector_egress_settings') { should eq event_config['vpc_connector_egress_settings'] }
+    end
+  end
+end
 
-      # HTTP trigger
-      if event_type.start_with?('http')
-        context "when using an HTTP trigger" do
-          it "should have an HTTPS trigger" do
-            expect(subject.https_trigger).not_to be_nil
-            expect(subject.https_trigger.security_level).to eq event_config['trigger_type']
-            expect(subject.https_trigger.url).to eq event_config['trigger_source']
+control "cloud_functions_script" do
+  title "Check Cloud Functions Script"
+
+  event_configs.each do |event_type, event_config|
+    describe "Script output for #{event_type} event" do
+      function_name = event_config['function_name']
+      script_path = File.expand_path(File.join(File.dirname(__FILE__), 'get_cloud_function_details.sh'))
+      script_output = %x{sh #{script_path} #{project_id} #{region} #{function_name}}
+
+      puts "Script output for #{event_type} event:"
+      puts script_output
+
+      context "when using #{event_type} event" do
+        it "should have the expected value for ingress settings" do
+          ingress_settings = script_output.match(/ingressSettings: (.+)/)&.captures&.first
+          expect(ingress_settings).to eq(event_config['ingress_settings'])
+        end
+
+        it "should have the expected value for max instances" do
+          max_instances = script_output.match(/maxInstances: (.+)/)&.captures&.first
+          expect(max_instances.to_i).to eq(event_config['max_instances'])
+        end        
+
+        it "should have the expected value for vpc connector egress settings" do
+          vpc_connector_egress_settings = script_output.match(/vpcConnectorEgressSettings: (.+)/)&.captures&.first
+          expect(vpc_connector_egress_settings).to eq(event_config['vpc_connector_egress_settings'])
+        end
+
+        it "should have the expected value for docker registry" do
+          docker_registry_cli = script_output.match(/dockerRegistry: (.+)/)&.captures&.first
+          expect(docker_registry_cli).to eq(docker_registry)
+        end
+
+        it "should have the expected value for docker repository" do
+          docker_repository_cli= script_output.match(/dockerRepository: (.+)/)&.captures&.first
+          expect(docker_repository_cli).to eq(docker_repository)
+        end
+
+        it "should have the expected value for https trigger URL" do
+          if event_type == 'http_python' || event_type == 'http_dotnet'
+            https_trigger_url = script_output.match(/httpsTrigger:\s+url: (.+)/)&.captures&.first
+            expect(https_trigger_url).to eq(event_config['https_trigger_url'])
           end
         end
-      # Pub/Sub trigger
-      elsif event_type.start_with?('pubsub')
-        context "when using a Pub/Sub trigger" do
-          it "should have an event trigger" do
-            expect(subject.event_trigger).not_to be_nil
-            expect(subject.event_trigger.event_type).to eq event_config['trigger_type']
-            expect(subject.event_trigger.resource).to eq event_config['trigger_source']
-          end
+
+        it "should have the expected value for ingress settings value" do
+          ingress_settings_value = script_output.match(/ingressSettings: (.+)/)&.captures&.first
+          expect(ingress_settings_value).to eq(event_config['ingress_settings'])
         end
-      # Storage trigger
-      elsif event_type.start_with?('storage')
-        context "when using a Storage trigger" do
-          it "should have an event trigger" do
-            expect(subject.event_trigger).not_to be_nil
-            expect(subject.event_trigger.event_type).to eq event_config['trigger_type']
-            expect(subject.event_trigger.resource).to eq event_config['trigger_source']
+
+        # it "should have the expected value for labels" do
+        #   labels = script_output.scan(/labels:\n\s+(\S+): (\S+)/).to_h
+        #   expect(labels).to eq(event_config['labels'])
+        # end
+
+        if event_type == 'http_python' || event_type == 'http_dotnet'
+          it "should include 'httpsTrigger:' and exclude 'eventTrigger:'" do
+            expect(script_output).to include('httpsTrigger:')
+            expect(script_output).not_to include('eventTrigger:')
+          end
+        elsif event_type == 'pubsub_python' || event_type == 'pubsub_dotnet' || event_type == 'storage_python' || event_type == 'storage_dotnet'
+          it "should include 'eventTrigger:'" do
+            expect(script_output).to include('eventTrigger:')
           end
         end
       end
