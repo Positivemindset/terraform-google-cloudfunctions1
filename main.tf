@@ -8,40 +8,39 @@ locals {
   }, var.labels)
 }
 
-/* 
-data "google_artifact_registry_repository" "my_repository" {
-  project       = var.project_id
-  location      = var.region
-  repository_id = var.repository_id
-}
- */
-
-# Clone the repository
 resource "null_resource" "clone_repository" {
   provisioner "local-exec" {
     command = <<-EOT
-        if [ -d ${var.folder_name} ]; then
-          rm -rf ${var.folder_name}
-        fi
+        # Create a temporary directory for the clone/copy
+        temp_dir="${var.folder_name}_temp"
+        mkdir -p "$temp_dir"
+
+        # Clone or copy the repository into the temporary directory
         if [ -n "${var.github_url}" ]; then
-          git clone ${var.github_url} ${var.folder_name}
+          echo "Cloning from Github: ${var.github_url}"
+          git clone "${var.github_url}" "$temp_dir"
         elif [ -n "${var.local_folder}" ]; then
-          cp -r ${var.local_folder} ${var.folder_name}
+          echo "Copying from local folder: ${var.local_folder}"
+          cp -r "${var.local_folder}" "$temp_dir"
         else
           echo "Error: No Github URL or local folder specified"
           exit 1
         fi
-      EOT
+
+        # Move the files into the main directory
+        mv $temp_dir/* "${var.folder_name}"
+        rm -rf "$temp_dir"
+
+        # Log directory and file status for debugging
+        echo "Directory contents after operation:"
+        ls "${var.folder_name}"
+    EOT
   }
 }
 
-
 # Archive the repository
 data "archive_file" "repository_archive" {
-  count = var.trigger_type == var.trigger_type_http || var.trigger_type == var.trigger_type_pubsub || var.trigger_type == var.trigger_type_bucket ? 1 : 0
-  depends_on = [
-    null_resource.clone_repository
-  ]
+  depends_on  = [null_resource.clone_repository]
   type        = "zip"
   source_dir  = var.folder_name
   output_path = "${var.zip_name}.zip"
@@ -49,10 +48,11 @@ data "archive_file" "repository_archive" {
 
 # Upload the archive to Google Cloud Storage
 resource "google_storage_bucket_object" "archive" {
-  count  = var.trigger_type == var.trigger_type_http || var.trigger_type == var.trigger_type_pubsub || var.trigger_type == var.trigger_type_bucket ? 1 : 0
-  name   = "${var.zip_name}.zip"
-  bucket = var.function_archive_bucket_name
-  source = data.archive_file.repository_archive[count.index].output_path
+  depends_on = [data.archive_file.repository_archive]
+  count      = var.trigger_type == var.trigger_type_http || var.trigger_type == var.trigger_type_pubsub || var.trigger_type == var.trigger_type_bucket ? 1 : 0
+  name       = "${var.zip_name}.zip"
+  bucket     = var.function_archive_bucket_name
+  source     = data.archive_file.repository_archive.output_path
 }
 
 
@@ -102,7 +102,5 @@ resource "google_cloudfunctions_function" "cloud_function" {
 
   labels = local.shared_labels
 
-  docker_registry   = var.docker_registry
-  docker_repository = var.docker_repository
 }
 

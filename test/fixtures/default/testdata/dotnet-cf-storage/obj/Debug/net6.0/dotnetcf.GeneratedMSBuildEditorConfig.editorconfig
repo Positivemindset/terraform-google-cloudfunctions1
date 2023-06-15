@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = dotnetcf
-build_property.ProjectDir = /Users/harevuri2/git/LBG/Serverless/terraform-google-cloudfunctions-1/test/fixtures/default/testdata/dotnet-cf/
+build_property.ProjectDir = /Users/harevuri2/git/LBG/Serverless/terraform-google-cloudfunctions-1/test/fixtures/default/testdata/dotnet-cf-storage/
