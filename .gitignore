@@ -28,3 +28,5 @@ testdata/*
 # Include specific folders in testdata directory
 !testdata/dotnet-cf/
 !testdata/python-cf/
+
+.DS_Store
